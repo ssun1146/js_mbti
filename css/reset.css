@@ -1,0 +1,121 @@
+* {
+  padding: 0;
+  margin: 0;
+  outline: 0;
+  text-size-adjust: none;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+}
+html {
+  text-size-adjust: none;
+  -webkit-text-size-adjust: none;
+}
+body {
+  width: 100%;
+  min-width: 320px;
+  line-height: 1.25;
+  background: #fff;
+  font-size: 14px;
+  letter-spacing: -0.08em;
+  font-family: 'SUIT', 'Malgun Gothic', Dotum, Gulim, Helvetica, sans-serif !important;
+}
+/* header,
+article,
+footer {
+  background: #fff;
+} */
+section,
+nav,
+article,
+aside,
+hgroup,
+header,
+footer {
+  display: block;
+}
+
+a {
+  color: #111;
+  text-decoration: none;
+  cursor: pointer;
+}
+a:link,
+a:visited,
+a:hover,
+a:active {
+  text-decoration: none;
+}
+span {
+  outline: transparent none 0;
+  border: 0 none;
+}
+
+em,
+i,
+address {
+  font-style: normal;
+  font-weight: 400;
+}
+dl,
+ul,
+ol,
+li,
+menu {
+  list-style: none;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-size: 14px;
+  color: #111;
+  font-weight: 400;
+}
+
+img,
+fieldset {
+  border: 0 none;
+}
+
+button {
+  border: 0 none;
+  background: none;
+  cursor: pointer;
+  outline: none;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+legend,
+caption {
+  display: none;
+  clear: both;
+}
+input,
+textarea,
+select,
+button,
+table {
+  line-height: inherit;
+  font-size: inherit;
+  font-family: inherit;
+}
+
+input,
+textarea {
+  border: 0;
+  background-image: none;
+  -webkit-appearance: none;
+  appearance: none;
+  outline: none;
+}
+textarea {
+  resize: none;
+}
+select {
+  border: 0;
+  -webkit-appearance: none;
+  appearance: none;
+}

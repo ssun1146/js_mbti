@@ -1,0 +1,28 @@
+:root {
+  --pc-breakpoint: 600px;
+  --pc-background: #fffcf8;
+}
+
+body {
+  background: var(--pc-background);
+}
+
+.container {
+  position: relative;
+  width: var(--pc-breakpoint);
+  height: 100vh;
+  padding: 0 20px;
+  margin: 0 auto;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+section {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+@media screen and (min-width:600px) {
+  .container {}
+}

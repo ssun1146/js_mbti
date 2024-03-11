@@ -1,0 +1,60 @@
+.hidden {
+  display: none !important;
+}
+
+.box {
+  width: 100px;
+  height: 100px;
+  border: 1px solid #000
+}
+.intro,
+.question,
+.result {
+  height:100vh;
+}
+
+.intro {}
+.intro__title {
+  display: inline-block;
+  
+}
+
+.question,
+.result {
+  opacity: 0;
+}
+
+.fadeIn {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeInSection 2s ease 1 forwards;
+}
+
+@keyframes fadeInSection {
+  0% {
+    opacity: 0;
+    transform: translateY(20px)
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fadeOut {
+  opacity: 1;
+  animation: fadeOutSection 2s ease 1 forwards;
+}
+
+@keyframes fadeOutSection {
+  0% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translateY(20px)
+  }
+}
