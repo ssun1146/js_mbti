@@ -8,7 +8,7 @@
       content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"
     />
     <meta name="theme-color" content="#FFFFFF" />
-    <title>sdfsdf</title>
+    <title>MBTI - 나는 어떤 커피일까</title>
 
     <link rel="stylesheet" href="./css/font.css" />
     <link rel="stylesheet" href="./css/reset.css" />
@@ -18,8 +18,26 @@
   <body>
     <div class="container">
       <section class="intro" style="background:#ffe9e9; ">
-        <div class="intro__title"></div>
-        <div class="intro__wrap"></div>
+        <div class="intro__wrap">
+          <div class="intro__title">
+            <span class="intro__txt">Roasting Test</span>
+            <h4 class="intro__title_txt">로스팅 테스트</h4>
+          </div>
+          <div class="intro__box">
+            <div class="mbti__desc">
+                <span>이런게 좋아!</span>
+                <i class="ico-like"></i>
+            </div>
+            <div class="mbti__desc">
+              <span>이런게 좋아!</span>
+              <i class="ico-xmark"></i>
+            </div>
+            <div class="mbti__desc">
+              <span>나의 특징은?</span>
+              <i class="ico-check"></i>
+            </div>
+          </div>
+        </div>
         <button class="btn-start" >시작하기</button>
       </section>
       
@@ -30,7 +48,7 @@
         </div>
         <div class="question__wrap">
           <div class="question__title"></div>
-          <div class="question__img"></div>
+          <!-- <div class="question__img"></div> -->
           <div class="question__btn_wrap">
             <button class="question__btn-a"></button>
             <button class="question__btn-b"></button>
@@ -40,30 +58,51 @@
 
       <section class="result" style="background:#e9e9ff; ">
         <div class="result__header">
-          <div class="result__header_box"></div>
-          <div class="result__thumb"></div>
+          <div class="result__header_box">로스팅 테스트</div>
+          <div class="result__thumb"><img src="" /></div>
           <div class="result__title"></div>
         </div>
         <div class="result__content">
           <div class="result__box">
+            <div class="mbti__desc">
+              <span>이런게 좋아!</span>
+              <i class="ico-like"></i>
+            </div>
             <ul class="result__list">
               <li class="result__lst"></li>
             </ul>            
           </div>
           <div class="result__box">
+            <div class="mbti__desc">
+              <span>이런게 좋아!</span>
+              <i class="ico-xmark"></i>
+            </div>
             <ul class="result__list">
               <li class="result__lst"></li>
             </ul>            
           </div>
           <div class="result__box">
+            <div class="mbti__desc">
+              <span>나의 특징은?</span>
+              <i class="ico-check"></i>
+            </div>
             <ul class="result__list">
               <li class="result__lst"></li>
             </ul>            
           </div>
         </div>
         <div class="result__footer">
-          <div class="result__footer_box"><!-- Good --></div>
-          <div class="result__footer_box"><!-- Bad --></div>
+          <div class="result__footer_box">
+            <h4>나와의 궁합은?</h4>
+          </div>
+          <div class="result__footer_box">
+            <p>Good</p>  
+            <span>하이</span>
+          </div>
+          <div class="result__footer_box">
+            <p>Bad</p>  
+            <span>하이</span>
+          </div>
         </div>
         <button class="btn-reload">다시 시작하기</button>
       </section>

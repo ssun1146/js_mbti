@@ -238,6 +238,7 @@ const questionList = [
 const resultList = [
   {
     type: 'enfp',
+    thumb: '../img/enfp.png',
     title: '수프리모',
     character: [
       '받은 게 있으면 배로 돌려주려고 함',
@@ -261,7 +262,8 @@ const resultList = [
     worstType: 'istp',
   },
   {
-    type: 'entj',
+    type: 'enfj',
+    thumb: '../img/enfj.png',
     title: '알투라',
     character: [
       '이 세상에 믿을 사람은 오직 나 하나임',
@@ -281,6 +283,7 @@ const resultList = [
   },
   {
     type: 'entp',
+    thumb: '../img/entp.png',
     title: '예가체프',
     character: [
       '일 크게 만들고 싫증나서 냅다 모른척 잘함',
@@ -305,6 +308,7 @@ const resultList = [
   },
   {
     type: 'entj',
+    thumb: '../img/entj.png',
     title: '브룬디',
     character: [
       '본인 스스로를 잘 알고 있음',
@@ -329,6 +333,7 @@ const resultList = [
   },
   {
     type: 'estp',
+    thumb: '../img/estp.png',
     title: '로부스타',
     character: [
       '오지랖으로는 어디가서 안 꿀림',
@@ -353,6 +358,7 @@ const resultList = [
   },
   {
     type: 'estj',
+    thumb: '../img/estj.png',
     title: '옐로우 버번',
     character: [
       '남의 마음을 어느정도 꿰뚤어봄',
@@ -377,6 +383,7 @@ const resultList = [
   },
   {
     type: 'esfp',
+    thumb: '../img/esfp.png',
     title: '블루마운틴',
     character: [
       '걍 될 대로 되라 마인드',
@@ -401,6 +408,7 @@ const resultList = [
   },
   {
     type: 'esfj',
+    thumb: '../img/esfj.png',
     title: '예멘모카 마타리',
     character: [
       '사람들이 아는 내 성격이랑 혼자 있을 때랑 조금 다름',
@@ -425,6 +433,7 @@ const resultList = [
   },
   {
     type: 'infp',
+    thumb: '../img/infp.png',
     title: '버본',
     character: [
       '친할수록 해결방안 제시하고 안 친할수록 성의없는 위로함',
@@ -448,7 +457,8 @@ const resultList = [
     worstType: 'estp',
   },
   {
-    type: 'infp',
+    type: 'infj',
+    thumb: '../img/infj.png',
     title: '안티구아',
     character: [
       '친구가 고민 상담하면 관심있는 척함',
@@ -473,6 +483,7 @@ const resultList = [
   },
   {
     type: 'intp',
+    thumb: '../img/intp.png',
     title: '하와이안 코나',
     character: [
       '관종인데 막상 관심 주면 어쩔줄 모름',
@@ -497,6 +508,7 @@ const resultList = [
   },
   {
     type: 'intj',
+    thumb: '../img/intj.png',
     title: '하라',
     character: [
       '할 일 있음 미리미리 끝냄',
@@ -521,6 +533,7 @@ const resultList = [
   },
   {
     type: 'istp',
+    thumb: '../img/istp.png',
     title: '케냐',
     character: [
       '사람 만나는거 좋은데 싫음',
@@ -545,6 +558,7 @@ const resultList = [
   },
   {
     type: 'istj',
+    thumb: '../img/istj.png',
     title: '모모라',
     character: [
       '성격이 왔다갔다 해서 나도 내 성격을 잘 모름',
@@ -569,6 +583,7 @@ const resultList = [
   },
   {
     type: 'isfp',
+    thumb: '../img/isfp.png',
     title: '탄자니아',
     character: [
       '발등에 불 떨어지건 말건 신경 안 쓰다가 타들어갈때쯤 시작함(하면 또 잘함)',
@@ -593,6 +608,7 @@ const resultList = [
   },
   {
     type: 'isfj',
+    thumb: '../img/isfj.png',
     title: '만델링',
     character: [
       '친한 사람일수록 직설적으로 표현함',
