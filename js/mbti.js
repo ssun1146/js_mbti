@@ -1,4 +1,5 @@
 const startButton = document.querySelector('.btn-start');
+const reloadButton = document.querySelector('.btn-reload');
 const introSection = document.querySelector('.intro');
 const questionSection = document.querySelector('.question');
 const questionWrap = document.querySelector('.question__wrap');
@@ -8,6 +9,7 @@ const answerAEl = document.querySelector('.question__btn-a');
 const answerBEl = document.querySelector('.question__btn-b');
 const resultSection = document.querySelector('.result');
 const boxSection = document.querySelector('.box');
+
 let questionNumber = 0;
 
 // 시작하기
@@ -18,6 +20,7 @@ startButton.addEventListener('click', () => {
 const toStartTest = () => {
   setQuestionView(0);
   sectionFade(introSection, questionSection);
+  setProgress(questionNumber);
 };
 
 // 화면전환 효과 주기
@@ -53,7 +56,7 @@ const setQuestionView = (num) => {
 // 프로그레스바
 const setProgress = (num) => {
   const progressBar = document.querySelector('.question__progress_bar');
-  progressBar[0].style.width = `${(100 / questionList.length) * num}%`;
+  progressBar.style.width = `${(100 / (questionList.length + 1)) * (num + 1)}%`;
 };
 
 const toClickAnswer = (num) => {
@@ -71,13 +74,14 @@ const toWriteAnswer = (num, index) => {
 answerEl.forEach((el, index) => {
   el.addEventListener('click', () => {
     toWriteAnswer(questionNumber, index);
-
+    
     if (questionNumber < 11) {
       sectionFadeOut(questionWrap);
       setTimeout(() => {
         questionNumber++;
         setQuestionView(questionNumber);  
         sectionFadeIn(questionWrap);
+        setProgress(questionNumber + 1);
       }, 500);
     } else if (questionNumber >= 11) {
       sectionFade(questionSection, resultSection);
@@ -110,7 +114,7 @@ const countPoint = (array) => {
 };
 
 const showResult = (result) => {
-  const resultThumb = document.querySelector('.result__thumb');
+  const resultThumb = document.querySelector('.result__thumb>img');
   const resultTitle = document.querySelector('.result__title');
   const resultBox = document.querySelectorAll('.result__box');
   const resultFooterBox = document.querySelectorAll('.result__footer_box');
@@ -118,82 +122,118 @@ const showResult = (result) => {
   resultList.forEach((el, index) => {
     if ( el.type === result ) {
       resultTitle.innerHTML = el.title;
-      resultBox[0].innerHTML = addResultDescription(el.likeDescription);
-      resultBox[1].innerHTML = addResultDescription(el.hateDescription);
-      resultBox[2].innerHTML = addResultDescription(el.character);
-      resultFooterBox[0].innerHTML = el.bestType;
-      resultFooterBox[1].innerHTML = el.worstType;
+      resultThumb.src = el.thumb;
+      resultBox[0].innerHTML = resultBoxContent('이런게 좋아!', 'like', el.likeDescription);
+      resultBox[1].innerHTML = resultBoxContent('이런건 싫어!', 'xmark', el.hateDescription);
+      resultBox[2].innerHTML = resultBoxContent('나의 특징은?', 'check', el.character);
+      resultFooterBox[1].innerHTML = footerBox('Good', el.bestType) ;
+      resultFooterBox[2].innerHTML = footerBox('Bad', el.worstType);
     }
   })
 }
 
-const addResultDescription = (text) => {
-  let listTagArray = [];
-  for (let i = 0; i < text.length; i++){
-    let listTag = `<li class="result__lst">${text}</li>`
-    listTagArray.push(listTag);
-  }
-  let tagToString = listTagArray.join('')
-  return tagToString;
+const resultBoxEl = (title, icon) => {
+  let resultBoxTemplate = `
+    <div class="mbti__desc">
+      <span>${title}</span>
+      <i class="ico-${icon}"></i>
+    </div>
+  `
+  return resultBoxTemplate
 }
 
+const resultDescEl = (text) => {
+  console.log(text.length);
+  const listTagArray = [];
+  text.forEach((el) => {
+    let listTag = `<li class="result__lst">${el}</li>`
+    listTagArray.push(listTag);
+  })
+  let tagToString = listTagArray.join('')
+  return tagToString
+}
 
+const resultBoxContent = (title, icon, text) => {
+  let resultBox = resultBoxEl(title, icon);
+  let resultDesc = resultDescEl(text);
+
+  const resultTemplate = `
+    ${resultBox}
+    <ul class="result__list">
+      ${resultDesc}
+    </ul>
+  `
+  return resultTemplate
+}
+
+const footerBox = (title, text) => {
+  const footerBoxTemplate = `
+    <p>${title}</p>  
+    <span>${text}</span>
+  `
+  return footerBoxTemplate
+}
+
+// 리로드하기
+reloadButton.addEventListener('click', () => {
+  window.location.reload();
+})
 const questionList = [
   {
     type: 'ei',
-    question: '오랜만에 만난 친구와 놀던 중에, 친구의 친구가 같이 놀자고 연락이 온다면?',
+    question: '오랜만에 만난 친구와 놀던 중에, <br />친구의 친구가 같이 놀자고 연락이 온다면?',
     answer: ['안될게 뭐 있어?! 빨리 오라고 해!', '으응…?(싫어 불편해 안된다고 해)'],
     userAnswer: '',
   },
   {
     type: 'ns',
-    question: '독감에 걸려서 체온이 40도가 넘어갔을 때 드는 생각은?',
+    question: '독감에 걸려서 <br />체온이 40도가 넘어갔을 때 드는 생각은?',
     answer: [
-      '나 이러다 죽는 거 아닌가... 아직 해보고 싶은거 많은데... 다들 슬퍼하겠지..?',
+      '나 이러다 죽는 거 아닌가.. 아직 해보고<br /> 싶은거 많은데... 다들 슬퍼하겠지..?',
       '와 40도네.. 어쩐지 너무 아프더라',
     ],
     userAnswer: '',
   },
   {
     type: 'tf',
-    question: '친구가 눈물을 글썽이며 힘들다고 말했을 때 나는...',
+    question: '친구가 눈물을 글썽이며 <br />힘들다고 말했을 때 나는...',
     answer: [
-      '왜그래? 뭐때문에 힘든거야? 라며 힘들어하는 이유를 묻는다.',
-      '5초 만에 감정 이입 완료... 같이 슬퍼진다.',
+      '왜그래? 뭐때문에 힘든거야? 라며 <br />힘들어하는 이유를 묻는다.',
+      '5초 만에 감정 이입 완료... <br />같이 슬퍼진다.',
     ],
     userAnswer: '',
   },
   {
     type: 'pj',
-    question: '한참 집에서 영화를 보고 있는데 친구가 갑자기 놀러 왔을 때 나는?',
+    question: '한참 집에서 영화를 보고 있는데 <br />친구가 갑자기 놀러 왔을 때 나는?',
     answer: [
-      '친구가 말도 없이 놀러 온 상황 자체가 재밌고 짜릿하다',
+      '친구가 말도 없이 놀러 온 상황 자체가 <br />재밌고 짜릿하다',
       '영화가 중간에 끊겨서 짜증난다',
     ],
     userAnswer: '',
   },
   {
     type: 'ei',
-    question: '데이트 중 길에서 연인의 친구를 마주친다면 나는..',
+    question: '데이트 중 길에서 <br /> 연인의 친구를 마주친다면 나는..',
     answer: ['자연스럽게 웃으며 대한다', '무생물이 되어 조용히 있는다'],
     userAnswer: '',
   },
   {
     type: 'ns',
-    question: '좀비 영화를 봤다! 내용을 궁금해 하는 친구에게 나는...',
+    question: '좀비 영화를 봤다! <br />내용을 궁금해 하는 친구에게 나는...',
     answer: [
-      '주인공 사람들 살리겠다고 혼자 좀비랑 싸우는데 진짜 멋지더라 소름돋았어..',
-      '주인공이 좀비 바이러스가 퍼진 세상에서 살아남는 영화야~',
+      '주인공 사람들 살리겠다고 좀비랑 <br />혼자 싸우는데 진짜 멋지더라 소름돋았어.',
+      '주인공이 좀비 바이러스가 퍼진 세상에서<br /> 살아남는 영화야~',
     ],
     userAnswer: '',
   },
   {
     type: 'tf',
     question:
-      '너 별로 열심히 준비 안 한 것 같은데 시험잘봤네? 멋있다! 라는 말을 들었을 때 나는?',
+      '[너 별로 열심히 준비 안 한 것 같은데 <br />시험잘봤네? 멋있다!]<br /> 라는 말을 들었을 때 나는?',
     answer: [
-      '열심히 안 했다니..? 어떻게 그런 심한 말을??',
-      '다른 사람들 눈에는 내가 덜 노력하고도 점수 잘 나오는 똑똑한 사람으로 보이겠군!',
+      '열심히 안 했다니..? <br />어떻게 그런 심한 말을??',
+      '다른 사람들 눈에는 내가 덜 노력하고<br />점수 잘 나오는 사람으로 보이겠군!',
     ],
     userAnswer: '',
   },
@@ -201,8 +241,8 @@ const questionList = [
     type: 'pj',
     question: '해외여행 계획을 짜게 된 나는...',
     answer: [
-      '비행기 표만 끊어두고 계획의 80%가 끝난다고 생각한다.',
-      '할 거면 제대로! 일별로 세부 일정을 정리한다',
+      '비행기 표만 끊어두고 <br />계획의 80%가 끝난다고 생각한다.',
+      '할 거면 제대로! <br /> 일별로 세부 일정을 정리한다',
     ],
     userAnswer: '',
   },
@@ -220,16 +260,16 @@ const questionList = [
   },
   {
     type: 'tf',
-    question: '친구가 갑자기 [난 네가 너무좋아!] 라고 했을 때 드는 생각은?',
+    question: '친구가 갑자기 [난 네가 너무좋아!] <br /> 라고 했을 때 드는 생각은?',
     answer: ['속으로 나한테 뭐 잘못했나 생각듬', '속으로 뿌듯하고 감동받음'],
     userAnswer: '',
   },
   {
     type: 'pj',
-    question: '썸 타는 중에 연인이 집에 놀러 온다고 했을 때 나는?',
+    question: '썸 타는 중에 연인이 <br />집에 놀러 온다고 했을 때 나는?',
     answer: [
       '눈에 보이는 곳만 급하게 치워둔다',
-      '쓰레기통 비우기, 침구 정리, 화장실 청소 등 모든 공간을 청소한다.',
+      '휴지통 비우기, 침구 정리, 화장실 청소 등<br /> 모든 공간을 청소한다.',
     ],
     userAnswer: '',
   },
@@ -238,7 +278,7 @@ const questionList = [
 const resultList = [
   {
     type: 'enfp',
-    thumb: '../img/enfp.png',
+    thumb: './img/enfp.png',
     title: '수프리모',
     character: [
       '받은 게 있으면 배로 돌려주려고 함',
@@ -263,7 +303,7 @@ const resultList = [
   },
   {
     type: 'enfj',
-    thumb: '../img/enfj.png',
+    thumb: './img/enfj.png',
     title: '알투라',
     character: [
       '이 세상에 믿을 사람은 오직 나 하나임',
@@ -283,7 +323,7 @@ const resultList = [
   },
   {
     type: 'entp',
-    thumb: '../img/entp.png',
+    thumb: './img/entp.png',
     title: '예가체프',
     character: [
       '일 크게 만들고 싫증나서 냅다 모른척 잘함',
@@ -308,7 +348,7 @@ const resultList = [
   },
   {
     type: 'entj',
-    thumb: '../img/entj.png',
+    thumb: './img/entj.png',
     title: '브룬디',
     character: [
       '본인 스스로를 잘 알고 있음',
@@ -333,7 +373,7 @@ const resultList = [
   },
   {
     type: 'estp',
-    thumb: '../img/estp.png',
+    thumb: './img/estp.png',
     title: '로부스타',
     character: [
       '오지랖으로는 어디가서 안 꿀림',
@@ -358,7 +398,7 @@ const resultList = [
   },
   {
     type: 'estj',
-    thumb: '../img/estj.png',
+    thumb: './img/estj.png',
     title: '옐로우 버번',
     character: [
       '남의 마음을 어느정도 꿰뚤어봄',
@@ -383,7 +423,7 @@ const resultList = [
   },
   {
     type: 'esfp',
-    thumb: '../img/esfp.png',
+    thumb: './img/esfp.png',
     title: '블루마운틴',
     character: [
       '걍 될 대로 되라 마인드',
@@ -408,7 +448,7 @@ const resultList = [
   },
   {
     type: 'esfj',
-    thumb: '../img/esfj.png',
+    thumb: './img/esfj.png',
     title: '예멘모카 마타리',
     character: [
       '사람들이 아는 내 성격이랑 혼자 있을 때랑 조금 다름',
@@ -433,7 +473,7 @@ const resultList = [
   },
   {
     type: 'infp',
-    thumb: '../img/infp.png',
+    thumb: './img/infp.png',
     title: '버본',
     character: [
       '친할수록 해결방안 제시하고 안 친할수록 성의없는 위로함',
@@ -458,7 +498,7 @@ const resultList = [
   },
   {
     type: 'infj',
-    thumb: '../img/infj.png',
+    thumb: './img/infj.png',
     title: '안티구아',
     character: [
       '친구가 고민 상담하면 관심있는 척함',
@@ -483,7 +523,7 @@ const resultList = [
   },
   {
     type: 'intp',
-    thumb: '../img/intp.png',
+    thumb: './img/intp.png',
     title: '하와이안 코나',
     character: [
       '관종인데 막상 관심 주면 어쩔줄 모름',
@@ -508,7 +548,7 @@ const resultList = [
   },
   {
     type: 'intj',
-    thumb: '../img/intj.png',
+    thumb: './img/intj.png',
     title: '하라',
     character: [
       '할 일 있음 미리미리 끝냄',
@@ -533,7 +573,7 @@ const resultList = [
   },
   {
     type: 'istp',
-    thumb: '../img/istp.png',
+    thumb: './img/istp.png',
     title: '케냐',
     character: [
       '사람 만나는거 좋은데 싫음',
@@ -558,7 +598,7 @@ const resultList = [
   },
   {
     type: 'istj',
-    thumb: '../img/istj.png',
+    thumb: './img/istj.png',
     title: '모모라',
     character: [
       '성격이 왔다갔다 해서 나도 내 성격을 잘 모름',
@@ -583,7 +623,7 @@ const resultList = [
   },
   {
     type: 'isfp',
-    thumb: '../img/isfp.png',
+    thumb: './img/isfp.png',
     title: '탄자니아',
     character: [
       '발등에 불 떨어지건 말건 신경 안 쓰다가 타들어갈때쯤 시작함(하면 또 잘함)',
@@ -608,7 +648,7 @@ const resultList = [
   },
   {
     type: 'isfj',
-    thumb: '../img/isfj.png',
+    thumb: './img/isfj.png',
     title: '만델링',
     character: [
       '친한 사람일수록 직설적으로 표현함',
