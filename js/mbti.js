@@ -8,15 +8,15 @@ const answerEl = document.querySelectorAll('.question__btn_wrap>button');
 const answerAEl = document.querySelector('.question__btn-a');
 const answerBEl = document.querySelector('.question__btn-b');
 const resultSection = document.querySelector('.result');
-const boxSection = document.querySelector('.box');
+const progressBar = document.querySelector('.question__progress_bar');
+const resultThumb = document.querySelector('.result__thumb>img');
+const resultTitle = document.querySelector('.result__title');
+const resultBox = document.querySelectorAll('.result__box');
+const resultFooterBox = document.querySelectorAll('.result__footer_box');
 
 let questionNumber = 0;
 
-// 시작하기
-startButton.addEventListener('click', () => {
-  toStartTest();
-});
-
+// 테스트 시작하기
 const toStartTest = () => {
   setQuestionView(0);
   sectionFade(introSection, questionSection);
@@ -33,15 +33,15 @@ const sectionFade = (hideBox, showBox) => {
 };
 
 const sectionFadeOut = (hideBox) => {
-  if (hideBox.classList.contains('fadeIn')){
-    hideBox.classList.remove('fadeIn')
+  if (hideBox.classList.contains('fadeIn')) {
+    hideBox.classList.remove('fadeIn');
   }
   hideBox.classList.add('fadeOut');
 };
 
-const sectionFadeIn = (showBox) => {  
-  if (showBox.classList.contains('fadeOut')){
-    showBox.classList.remove('fadeOut')
+const sectionFadeIn = (showBox) => {
+  if (showBox.classList.contains('fadeOut')) {
+    showBox.classList.remove('fadeOut');
   }
   showBox.classList.add('fadeIn');
 };
@@ -55,104 +55,83 @@ const setQuestionView = (num) => {
 
 // 프로그레스바
 const setProgress = (num) => {
-  const progressBar = document.querySelector('.question__progress_bar');
   progressBar.style.width = `${(100 / (questionList.length + 1)) * (num + 1)}%`;
 };
 
-const toClickAnswer = (num) => {
-  answerEl.forEach((el, index) => {
-    el.addEventListener('click', () => {
-      questionList[num].userAnswer = index;
-    });
-  });
-};
-
+// 답변 넣어주기
 const toWriteAnswer = (num, index) => {
   questionList[num].userAnswer = index;
 };
 
-answerEl.forEach((el, index) => {
-  el.addEventListener('click', () => {
-    toWriteAnswer(questionNumber, index);
-    
-    if (questionNumber < 11) {
-      sectionFadeOut(questionWrap);
-      setTimeout(() => {
-        questionNumber++;
-        setQuestionView(questionNumber);  
-        sectionFadeIn(questionWrap);
-        setProgress(questionNumber + 1);
-      }, 500);
-    } else if (questionNumber >= 11) {
-      sectionFade(questionSection, resultSection);
-      countPoint(questionList)
-    }
-  });
-});
-
+// 결과 계산하기
 const countPoint = (array) => {
   let eiResult = 0;
   let nsResult = 0;
   let tfResult = 0;
   let pjResult = 0;
-  let result = []; // string으로 변경
-  
-  array.filter ((x) => {
-    if (x.type === 'ei' && x.userAnswer) eiResult++;
-    if (x.type === 'ns' && x.userAnswer) nsResult++;
-    if (x.type === 'tf' && x.userAnswer) tfResult++;
-    if (x.type === 'pj' && x.userAnswer) pjResult++;
-  })
+  let result = '';
 
-  eiResult > 1 ? result+='e' : result+='i'
-  nsResult > 1 ? result+='n' : result+='s'
-  tfResult > 1 ? result+='t' : result+='f'
-  pjResult > 1 ? result+='p' : result+='j'
+  array.map((x) => {
+    if (x.type === 'ei' && x.userAnswer === 0) eiResult++;
+    if (x.type === 'ns' && x.userAnswer === 0) nsResult++;
+    if (x.type === 'tf' && x.userAnswer === 0) tfResult++;
+    if (x.type === 'pj' && x.userAnswer === 0) pjResult++;
+  });
 
-  // return result;
-  showResult(result)
+  eiResult > 1 ? (result += 'e') : (result += 'i');
+  nsResult > 1 ? (result += 'n') : (result += 's');
+  tfResult > 1 ? (result += 't') : (result += 'f');
+  pjResult > 1 ? (result += 'p') : (result += 'j');
+
+  showResult(result);
 };
 
+// 결과화면 보여주기
 const showResult = (result) => {
-  const resultThumb = document.querySelector('.result__thumb>img');
-  const resultTitle = document.querySelector('.result__title');
-  const resultBox = document.querySelectorAll('.result__box');
-  const resultFooterBox = document.querySelectorAll('.result__footer_box');
-
   resultList.forEach((el, index) => {
-    if ( el.type === result ) {
+    if (el.type === result) {
       resultTitle.innerHTML = el.title;
       resultThumb.src = el.thumb;
-      resultBox[0].innerHTML = resultBoxContent('이런게 좋아!', 'like', el.likeDescription);
-      resultBox[1].innerHTML = resultBoxContent('이런건 싫어!', 'xmark', el.hateDescription);
+      resultBox[0].innerHTML = resultBoxContent(
+        '이런게 좋아!',
+        'like',
+        el.likeDescription
+      );
+      resultBox[1].innerHTML = resultBoxContent(
+        '이런건 싫어!',
+        'xmark',
+        el.hateDescription
+      );
       resultBox[2].innerHTML = resultBoxContent('나의 특징은?', 'check', el.character);
-      resultFooterBox[1].innerHTML = footerBox('Good', el.bestType) ;
+      resultFooterBox[1].innerHTML = footerBox('Good', el.bestType);
       resultFooterBox[2].innerHTML = footerBox('Bad', el.worstType);
     }
-  })
-}
+  });
+};
 
+// 결과화면 템플릿 - 결과 타이틀영역
 const resultBoxEl = (title, icon) => {
   let resultBoxTemplate = `
     <div class="mbti__desc">
       <span>${title}</span>
       <i class="ico-${icon}"></i>
     </div>
-  `
-  return resultBoxTemplate
-}
+  `;
+  return resultBoxTemplate;
+};
 
+// 결과화면 템플릿 - 결과 설명영역
 const resultDescEl = (text) => {
-  console.log(text.length);
   const listTagArray = [];
   text.forEach((el) => {
-    let listTag = `<li class="result__lst">${el}</li>`
+    let listTag = `<li class="result__lst">${el}</li>`;
     listTagArray.push(listTag);
-  })
-  let tagToString = listTagArray.join('')
-  return tagToString
-}
+  });
+  let tagToString = listTagArray.join('');
+  return tagToString;
+};
 
+// 결과화면 템플릿 - 결과영역 그리기
 const resultBoxContent = (title, icon, text) => {
   let resultBox = resultBoxEl(title, icon);
   let resultDesc = resultDescEl(text);
@@ -162,26 +141,54 @@ const resultBoxContent = (title, icon, text) => {
     <ul class="result__list">
       ${resultDesc}
     </ul>
-  `
-  return resultTemplate
-}
+  `;
+  return resultTemplate;
+};
 
+// 결과화면 템플릿 - 결과 하단 궁합영역
 const footerBox = (title, text) => {
   const footerBoxTemplate = `
     <p>${title}</p>  
     <span>${text}</span>
-  `
-  return footerBoxTemplate
-}
+  `;
+  return footerBoxTemplate;
+};
+
+// 시작하기
+startButton.addEventListener('click', () => {
+  toStartTest();
+});
+
+// 질문영역 보여주기
+answerEl.forEach((el, index) => {
+  el.addEventListener('click', () => {
+    toWriteAnswer(questionNumber, index);
+
+    if (questionNumber < 11) {
+      sectionFadeOut(questionWrap);
+      setTimeout(() => {
+        questionNumber++;
+        setQuestionView(questionNumber);
+        sectionFadeIn(questionWrap);
+        setProgress(questionNumber + 1);
+      }, 500);
+    } else {
+      sectionFade(questionSection, resultSection);
+      countPoint(questionList);
+    }
+  });
+});
 
 // 리로드하기
 reloadButton.addEventListener('click', () => {
   window.location.reload();
-})
+});
+
 const questionList = [
   {
     type: 'ei',
-    question: '오랜만에 만난 친구와 놀던 중에, <br />친구의 친구가 같이 놀자고 연락이 온다면?',
+    question:
+      '오랜만에 만난 친구와 놀던 중에, <br />친구의 친구가 같이 놀자고 연락이 온다면?',
     answer: ['안될게 뭐 있어?! 빨리 오라고 해!', '으응…?(싫어 불편해 안된다고 해)'],
     userAnswer: '',
   },
@@ -298,8 +305,8 @@ const resultList = [
       '말이 안 통하는 인간',
       '가식 떠는게 눈에 보이면 별로',
     ],
-    bestType: 'intj',
-    worstType: 'istp',
+    bestType: '하라',
+    worstType: '케냐',
   },
   {
     type: 'enfj',
@@ -318,8 +325,8 @@ const resultList = [
       '내로남불',
       '이래라 저래라',
     ],
-    bestType: 'infp',
-    worstType: 'intj',
+    bestType: '탄자니아',
+    worstType: '하라',
   },
   {
     type: 'entp',
@@ -343,8 +350,8 @@ const resultList = [
       '배신에 예민함',
       '뭘 하든 간지가 나지 않으면 별로',
     ],
-    bestType: 'infp',
-    worstType: 'isfp',
+    bestType: '버본',
+    worstType: '탄자니아',
   },
   {
     type: 'entj',
@@ -368,8 +375,8 @@ const resultList = [
       '날 필요로 하지 않는 것 같은 느낌',
       '도움을 주지 못하는 피치 못할 상황',
     ],
-    bestType: 'intp',
-    worstType: 'isfj',
+    bestType: '하와이안코나',
+    worstType: '만델링',
   },
   {
     type: 'estp',
@@ -393,8 +400,8 @@ const resultList = [
       '정해진 틀 안에 갇혀있으면 답답함',
       '똑같은 일상이 반복되는 것 만큼 지루한게 없음.',
     ],
-    bestType: 'isfj',
-    worstType: 'entj',
+    bestType: '만델링',
+    worstType: '브룬디',
   },
   {
     type: 'estj',
@@ -418,8 +425,8 @@ const resultList = [
       '가식 덩어리',
       '인신공격 극혐',
     ],
-    bestType: 'istp',
-    worstType: 'intp',
+    bestType: '케냐',
+    worstType: '하와이안 코나',
   },
   {
     type: 'esfp',
@@ -443,8 +450,8 @@ const resultList = [
       '하고 싶은 거 못하면 스트레스 받지만 오래 가지 않음',
       '하나에만 집중하는',
     ],
-    bestType: 'istj',
-    worstType: 'intp',
+    bestType: '모모라',
+    worstType: '하와이안 코나',
   },
   {
     type: 'esfj',
@@ -468,8 +475,8 @@ const resultList = [
       '싸우는거 싫어하지만 싸워서 지는 건 더 싫음',
       '무시받는 거 못 참음',
     ],
-    bestType: 'isfp',
-    worstType: 'intj',
+    bestType: '탄자니아',
+    worstType: '하라',
   },
   {
     type: 'infp',
@@ -493,8 +500,8 @@ const resultList = [
       '집착하며 귀찮게 구는 거 딱 질색',
       '무논리 펼치는 사람 보면 화남',
     ],
-    bestType: 'infp',
-    worstType: 'estp',
+    bestType: '버본',
+    worstType: '로부스타',
   },
   {
     type: 'infj',
@@ -518,8 +525,8 @@ const resultList = [
       '억지 논리',
       '기차 화통을 삶아 먹은 듯한 목소리',
     ],
-    bestType: 'entp',
-    worstType: 'estj',
+    bestType: '예가체크',
+    worstType: '옐로우 버번',
   },
   {
     type: 'intp',
@@ -543,8 +550,8 @@ const resultList = [
       '자기자랑 안 통함',
       '말과 행동에 모순이 있는 사람',
     ],
-    bestType: 'entj',
-    worstType: 'esfp',
+    bestType: '브룬디',
+    worstType: '블루마운틴',
   },
   {
     type: 'intj',
@@ -568,8 +575,8 @@ const resultList = [
       '잠이 안 올 정도의 잡생각',
       '오해받으면 그냥 못 넘김',
     ],
-    bestType: 'enfp',
-    worstType: 'estj',
+    bestType: '수프리모',
+    worstType: '옐로우 버번',
   },
   {
     type: 'istp',
@@ -593,8 +600,8 @@ const resultList = [
       '나에 대한 뒷담, 헛소문 극혐',
       '똥고집 싫어함(본인도 똥고집임)',
     ],
-    bestType: 'esfj',
-    worstType: 'enfp',
+    bestType: '예멘모카마타리',
+    worstType: '수프리모',
   },
   {
     type: 'istj',
@@ -618,8 +625,8 @@ const resultList = [
       '싫은 소리 들으면 자존감 낮아짐',
       '계획했던 일이 틀어지면 잠깐 머리 지끈거림',
     ],
-    bestType: 'esfp',
-    worstType: 'intp',
+    bestType: '블루마운틴',
+    worstType: '하와이안코나',
   },
   {
     type: 'isfp',
@@ -643,8 +650,8 @@ const resultList = [
       '무례한 사람 극혐',
       '같은 말 반복',
     ],
-    bestType: 'estj',
-    worstType: 'entp',
+    bestType: '옐로우 버번',
+    worstType: '예가체프',
   },
   {
     type: 'isfj',
@@ -668,7 +675,7 @@ const resultList = [
       '협동, 협력, 팀플 같은 운명공동체',
       '어떻게든 되겠지 나중에 하자~',
     ],
-    bestType: 'estp',
-    worstType: 'entj',
+    bestType: '로부스타',
+    worstType: '브룬디',
   },
-]
+];
